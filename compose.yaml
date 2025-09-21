@@ -1,0 +1,28 @@
+# Use root/example as user/password credentials
+
+version: '3.8'
+
+services:
+  db:
+    image: mysql:latest
+    container_name: jinahya-point
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: point
+      MYSQL_USER: point
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306" # Maps host port 3306 to container port 3306
+    volumes:
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./var/lib/mysql:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  db_data: # Define the named volume for data persistence
+
+networks:
+  app-network: # Define the network for communication with other services
+    driver: bridge
